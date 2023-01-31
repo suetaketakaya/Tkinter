@@ -61,8 +61,9 @@ class Application(tk.Frame):
                 data = data.replace('\n', ',')
             data = data.split(',')
             patternnum = patternnum * len(data)
-
             matrix_ary.append(data)
+
+            print(len(data))
 
         print(matrix_ary)
         collen = len(matrix_ary)
@@ -71,12 +72,17 @@ class Application(tk.Frame):
         # 　Max行 対象要素＊
         result_ary = [[0]* collen] * patternnum
 
-        for i in range(0, patternnum):
-            now = patternnum / len(matrix_ary[i])
-            for j in range(1, collen):
-                for x in data:
-                    result_ary[i][j * data.index(x) ] = x
-        pass
+        print('patternnum', ':', patternnum)
+
+
+        for i in range(0, len(files)):
+            now = int(patternnum / len(matrix_ary[i]))
+            for j in range(1, now):
+                for x in matrix_ary[i]:
+
+                    print(j*matrix_ary[i].index(x)-1) #←計算式として不十分
+                    result_ary[j*matrix_ary[i].index(x)-1][i] = x
+        print(result_ary)
 
 def main():
     root = tk.Tk()
