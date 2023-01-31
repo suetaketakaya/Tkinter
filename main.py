@@ -1,3 +1,4 @@
+import csv
 import tkinter as tk
 from tkinter import ttk
 
@@ -84,6 +85,10 @@ class Application(tk.Frame):
                     result_ary[j*matrix_ary[i].index(x)-1][i] = x
         print(result_ary)
 
+        f = open('out.csv', 'w', encoding='utf-8', newline='')
+        dataWriter = csv.writer(f)
+        dataWriter.writerows(result_ary)
+        
 def main():
     root = tk.Tk()
     app = Application(master=root)#Inherit
