@@ -1,4 +1,5 @@
 import csv
+from readline import insert_text
 import tkinter as tk
 from tkinter import ttk
 
@@ -51,11 +52,10 @@ class Application(tk.Frame):
         patternnum = 1
         files = glob.glob('./tmp/*.txt')
         matrix_ary = []
+        title_ary = []
         for file in files:
             f = open(file, 'r', encoding='UTF-8')
             data = f.read()
-
-            print(file, '\n' , data)
             if data == "":
                 data = " "
             elif '\n' in data:
@@ -63,32 +63,27 @@ class Application(tk.Frame):
             data = data.split(',')
             patternnum = patternnum * len(data)
             matrix_ary.append(data)
+            title_ary.append(file.split('/')[-1].split('.')[-2])
+        
+        title_ary+=["初回購入","購入１年目","購入２年目","",""]
 
-            print(len(data))
+        print(title_ary)
 
-        print(matrix_ary)
-        collen = len(matrix_ary)
-
-        # 全行の配列
-        # 　Max行 対象要素＊
-        result_ary = [[0]* collen] * patternnum
-
-        print('patternnum', ':', patternnum)
-
+        result_ary = [[i for i in range(len(matrix_ary))] for j in range(0, patternnum)]
 
         for i in range(0, len(files)):
             now = int(patternnum / len(matrix_ary[i]))
-            for j in range(1, now):
-                for x in matrix_ary[i]:
-
-                    print(j*matrix_ary[i].index(x)-1) #←計算式として不十分
-                    result_ary[j*matrix_ary[i].index(x)-1][i] = x
-        print(result_ary)
-
+            for j in range(0, now):
+                for x in range(0, len(matrix_ary[i])):
+                    idx = matrix_ary[i].index(matrix_ary[i][x])
+                    insert_idx = idx + (j)*len(matrix_ary[i])
+                    result_ary[insert_idx][i] = matrix_ary[i][x]
+                    
         f = open('out.csv', 'w', encoding='utf-8', newline='')
         dataWriter = csv.writer(f)
+        dataWriter.writerow(title_ary)
         dataWriter.writerows(result_ary)
-        
+
 def main():
     root = tk.Tk()
     app = Application(master=root)#Inherit
